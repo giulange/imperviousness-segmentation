@@ -10,3 +10,5 @@ data/
 osm_data/
 
 spacenet/
+
+.ipynb_checkpoints/
