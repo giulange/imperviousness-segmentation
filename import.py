@@ -1,3 +1,6 @@
+#
+from IPython.display import IFrame
+
 # 
 import numpy as np
 import pandas as pd
@@ -47,3 +50,7 @@ import shutil
 #
 from tqdm import tqdm
 import time
+
+#
+import folium
+from folium import plugins
