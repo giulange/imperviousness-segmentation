@@ -26,7 +26,7 @@ from sqlalchemy import inspect
 import osmnx as ox
 
 #
-from shapely.geometry import Polygon, box
+from shapely.geometry import Polygon, box, MultiPolygon
 import shapely.ops as so
 
 #
