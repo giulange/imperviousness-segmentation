@@ -54,8 +54,16 @@ Va riscritto verso il **Copernicus Data Space Ecosystem**:
 
 Stack già nell'env `gpu` (PyTorch CUDA 12 + Ultralytics ≥ 8.3). Non serve più il
 Docker YOLO separato (resta un'opzione). Il dataset `imp_class` (classi
-`0: building`, `1: street`) e gli `imgsz=480` restano validi; con A100 (40/80 GB)
-puoi rialzare `batch` e provare `imgsz=640`/`yolo11-seg`.
+`0: building`, `1: street`) e gli `imgsz=480` restano validi.
+
+**Attenzione — la VM `ai-lab` ha l'A100 80GB in modalità MIG**: è divisa in
+**7 istanze da `1g.10gb` (10 GB ciascuna)**, non 80 GB monolitici. Per il training:
+- ogni job vede ~10 GB → tieni `imgsz=480`, `batch` piccolo (2–8), `cache=True`;
+  `imgsz=640` rischia OOM come nel 2023.
+- seleziona una slice con `CUDA_VISIBLE_DEVICES=MIG-<UUID>` (lista con `nvidia-smi -L`).
+- se serve la GPU intera (80 GB) per esperimenti grossi, va disattivata la MIG
+  (richiede privilegi admin sulla VM): `sudo nvidia-smi -mig 0`.
+- driver VM 595.71 / CUDA 13.2: compatibile con lo stack CUDA 12 di pixi.
 
 ## 6. Sicurezza — DA FARE
 

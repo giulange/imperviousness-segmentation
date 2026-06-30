@@ -17,7 +17,8 @@ name = "imperviousness-segmentation"
 version = "0.2.0"
 description = "DL imperviousness segmentation from Sentinel-2 + OSM labels (YOLO-seg)"
 channels = ["conda-forge"]
-platforms = ["linux-64", "osx-arm64"]
+# linux-64 = VM A100; osx-64 = Mac Intel; osx-arm64 = Mac Apple Silicon
+platforms = ["linux-64", "osx-64", "osx-arm64"]
 
 # ----------------------------------------------------------------------------
 #  Dipendenze comuni (geo + db + notebook) — girano su Mac e su Linux
@@ -66,10 +67,8 @@ cdsetool = "*"
 #  Feature GPU — solo Linux/A100 (CUDA 12). Usata dall'environment "gpu".
 # ----------------------------------------------------------------------------
 [feature.gpu]
-platforms = ["linux-64"]
-
-[feature.gpu.system-requirements]
-cuda = "12"
+# cuda dichiarato inline sul platform (sintassi pixi >= 0.40)
+platforms = [{ platform = "linux-64", cuda = "12" }]
 
 [feature.gpu.dependencies]
 pytorch-gpu = ">=2.2"
