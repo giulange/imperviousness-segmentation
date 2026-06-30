@@ -12,3 +12,21 @@ osm_data/
 spacenet/
 
 .ipynb_checkpoints/
+
+# --- segreti (NON committare) ---
+.env
+prisma_credentials.json
+sentinelsat_credentials.json
+
+# --- gitnexus (indice locale knowledge graph) ---
+.gitnexus/
+
+# --- pixi / python ---
+.pixi/
+__pycache__/
+*.pyc
+
+# --- output training (yolo runs, pesi) ---
+runs/
+*.pt
+datasets/
