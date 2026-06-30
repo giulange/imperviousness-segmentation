@@ -67,8 +67,13 @@ cdsetool = "*"
 #  Feature GPU — solo Linux/A100 (CUDA 12). Usata dall'environment "gpu".
 # ----------------------------------------------------------------------------
 [feature.gpu]
-# cuda dichiarato inline sul platform (sintassi pixi >= 0.40)
-platforms = [{ platform = "linux-64", cuda = "12" }]
+platforms = ["linux-64"]
+
+# NB: pixi 0.71 emette un warning di deprecazione su [system-requirements] ma
+# funziona; la sintassi inline `platforms=[{platform=..,cuda=..}]` non è ancora
+# accettata da questa versione.
+[feature.gpu.system-requirements]
+cuda = "12"
 
 [feature.gpu.dependencies]
 pytorch-gpu = ">=2.2"
