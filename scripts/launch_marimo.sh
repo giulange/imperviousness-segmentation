@@ -18,4 +18,4 @@ PORT="${PORT:-2718}"
 echo "==> Avvio Marimo (env=$ENV) su 0.0.0.0:$PORT"
 echo "    Tunnel dal laptop:  ssh -N -L $PORT:localhost:$PORT <utente>@<vm-a100>"
 echo ""
-exec pixi run -e "$ENV" marimo edit --headless --host 0.0.0.0 --port "$PORT" notebooks
+exec pixi run --frozen -e "$ENV" marimo edit --headless --host 0.0.0.0 --port "$PORT" notebooks

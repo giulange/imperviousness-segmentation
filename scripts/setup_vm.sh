@@ -18,8 +18,11 @@ else
   echo "    Pixi già presente: $(pixi --version)"
 fi
 
-echo "==> 2/4  Risoluzione ambiente GPU (conda-forge + CUDA 12 + PyTorch + Ultralytics)"
-pixi install -e gpu
+echo "==> 2/4  Installazione ambiente GPU dal lock committato (--locked: NON ri-risolve)"
+# --locked installa esattamente da pixi.lock (riproducibile, niente conflitti di
+# lock rigenerati). Se il manifest e il lock divergono, pixi avvisa: in tal caso
+# rigenera il lock sul Mac con `pixi install` e committalo, NON sulla VM.
+pixi install -e gpu --locked
 
 echo "==> 3/4  Configurazione credenziali"
 if [ ! -f .env ]; then
