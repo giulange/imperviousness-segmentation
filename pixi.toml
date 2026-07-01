@@ -55,13 +55,19 @@ psycopg2 = "*"
 marimo = ">=0.9"
 python-dotenv = "*"
 ipython = "*"
+pyyaml = ">=6.0"           # parametri pipeline in YAML
 
-# --- Copernicus Data Space Ecosystem (sostituto di sentinelsat/SciHub) ---
-pystac-client = "*"
+# --- Copernicus Data Space Ecosystem + STAC/COG ---
+pystac-client = ">=0.8"    # ricerca sui cataloghi STAC (CDSE / Earth Search / PC)
+odc-stac = "*"             # STAC -> xarray con lettura finestrata COG (ritaglio AoI)
 
 [pypi-dependencies]
-# cdsetool: download da Copernicus Data Space Ecosystem (CDSE)
+# cdsetool: download prodotti dal Copernicus Data Space Ecosystem (CDSE)
 cdsetool = "*"
+# planetary-computer: firma degli asset STAC di Microsoft Planetary Computer (opzionale)
+planetary-computer = "*"
+# detect-secrets: scansione segreti nel pre-commit hook (cross-platform, puro Python)
+detect-secrets = "*"
 
 # ----------------------------------------------------------------------------
 #  Feature GPU — solo Linux/A100 (CUDA 12). Usata dall'environment "gpu".

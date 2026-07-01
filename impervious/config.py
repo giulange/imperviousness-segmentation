@@ -1,7 +1,7 @@
 """Configurazione centralizzata via variabili d'ambiente / file .env.
 
 Sostituisce i file di credenziali in chiaro (prisma_credentials.json,
-sentinelsat_credentials.json) e le stringhe `postgresql://user:pass@...`
+sentinelsat_credentials.json) e le stringhe di connessione con credenziali
 hardcoded nei notebook.
 
 Crea un file `.env` (vedi `.env.example`) — NON va committato.
@@ -32,6 +32,9 @@ class Settings:
     # --- Copernicus Data Space Ecosystem (sostituto di SciHub/SentinelSat) ---
     cdse_user: str = os.getenv("CDSE_USER", "")
     cdse_password: str = os.getenv("CDSE_PASSWORD", "")
+    # Chiavi S3 EODATA (per lettura finestrata COG/JP2 dal bucket CDSE)
+    cdse_s3_access_key: str = os.getenv("CDSE_S3_ACCESS_KEY", "")
+    cdse_s3_secret_key: str = os.getenv("CDSE_S3_SECRET_KEY", "")
 
     # --- Percorsi dati (non versionati) ---
     data_dir: Path = Path(os.getenv("DATA_DIR", str(_ROOT / "data")))

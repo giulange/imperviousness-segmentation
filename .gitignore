@@ -18,6 +18,10 @@ spacenet/
 prisma_credentials.json
 sentinelsat_credentials.json
 
+# --- marimo detached (runtime) ---
+marimo.log
+.marimo.pid
+
 # --- gitnexus (indice locale knowledge graph) ---
 .gitnexus/
 

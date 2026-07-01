@@ -1,0 +1,67 @@
+# =============================================================================
+#  Parametri della pipeline imperviousness-segmentation.
+#  Solo parametri NON segreti. I segreti (password DB, credenziali CDSE) stanno
+#  in .env (vedi .env.example) e si leggono via impervious.config.
+# =============================================================================
+
+# --- Area di studio (AoI) ---
+aoi:
+  # file GeoJSON dell'area di studio (relativo alla root del progetto)
+  file: naples_metropolytan.geojson
+  crs_geographic: 4326       # CRS dell'AoI / OSM
+  crs_projected: 32633       # UTM 33N: CRS metrico per tiling e annotazioni
+
+# --- Acquisizione Sentinel-2 (STAC + COG) ---
+acquire:
+  # endpoint STAC: cdse | earth-search | planetary-computer
+  stac: cdse
+  stac_url: https://catalogue.dataspace.copernicus.eu/stac
+  collection: SENTINEL-2          # per earth-search usare "sentinel-2-l2a"
+  processing_level: L2A           # L1C | L2A
+  date_from: "2023-04-01"
+  date_to: "2023-04-30"
+  max_cloud_cover: 10             # percentuale
+  bands: [B04, B03, B02]          # RGB (aggiungi B08 per NIR, ecc.)
+  resolution: 10                  # metri
+
+# --- OSM ---
+osm:
+  # tag OSM da scaricare (chiave: valore o True)
+  tags:
+    building: true
+  keep_columns: [element_type, osmid, nodes, building, "addr:city", geometry]
+  out_dir: osm_data
+  postgis_table: buildings
+
+# --- NUTS (unità amministrative) ---
+nuts:
+  level: 4
+  table: nuts_4_2013
+  name_column: nuts_name
+  geom_column: geom
+
+# --- Tiling / annotazioni ---
+tiles:
+  size: 480                 # lato tile in pixel (32*15)
+  overlap: true             # true = raster_tile_overlap, false = raster_tile
+  n_tiles_x: 15
+  n_tiles_y: 15
+  class_id: 0               # id classe YOLO per gli edifici
+
+# --- Dataset YOLO ---
+dataset:
+  name: imp_class
+  seed: 3008
+  split: { train: 0.7, val: 0.2, test: 0.1 }
+  classes:
+    0: building
+    1: street
+
+# --- Training YOLO ---
+train:
+  model: yolov8n-seg.pt
+  epochs: 100
+  imgsz: 480
+  batch: 4
+  workers: 2
+  cache: true
