@@ -1,5 +1,6 @@
 import marimo
 
+__generated_with = "0.23.11"
 app = marimo.App(width="medium")
 
 
@@ -12,14 +13,12 @@ def _():
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(
-        r"""
-        # 00 · Scratch
+    mo.md(r"""
+    # 00 · Scratch
 
-        Blocco appunti per prove veloci ed esplorazione. Tutto l'ambiente è
-        disponibile: importa da `impervious` e sperimenta liberamente.
-        """
-    )
+    Blocco appunti per prove veloci ed esplorazione. Tutto l'ambiente è
+    disponibile: importa da `impervious` e sperimenta liberamente.
+    """)
     return
 
 
@@ -30,10 +29,7 @@ def _():
     from impervious import acquire, nuts, osm, db, raster, annotate, dataset, model
 
     P = load_params()
-    return (
-        P, acquire, annotate, db, dataset, model, nuts, osm,
-        pg_engine, raster, settings,
-    )
+    return (P,)
 
 
 @app.cell

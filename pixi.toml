@@ -62,6 +62,8 @@ pystac-client = ">=0.8"    # ricerca sui cataloghi STAC (CDSE / Earth Search / P
 odc-stac = "*"             # STAC -> xarray con lettura finestrata COG (ritaglio AoI)
 
 [pypi-dependencies]
+# il pacchetto locale, installato editable -> importabile ovunque (notebook/script/REPL)
+impervious = { path = ".", editable = true }
 # cdsetool: download prodotti dal Copernicus Data Space Ecosystem (CDSE)
 cdsetool = "*"
 # planetary-computer: firma degli asset STAC di Microsoft Planetary Computer (opzionale)
