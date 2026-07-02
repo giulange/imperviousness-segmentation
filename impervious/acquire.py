@@ -51,18 +51,16 @@ def search_s2(aoi, *, date_from, date_to, max_cloud=10, collection="SENTINEL-2",
     `aoi`: geometria shapely (in EPSG:4326). Ritorna la lista di STAC Item.
     """
     client = stac_client(stac, stac_url)
-    # filtro nuvole: la chiave differisce per provider
-    query = {"eo:cloud_cover": {"lt": max_cloud}}
-    if stac == "cdse":
-        query = {"cloudCover": {"lt": max_cloud}}
     search = client.search(
         collections=[collection],
         bbox=list(aoi.bounds),
         datetime=f"{date_from}/{date_to}",
-        query=query,
+        query={"eo:cloud_cover": {"lt": max_cloud}},  # proprietà STAC standard
         max_items=limit,
     )
-    return list(search.items())
+    items = list(search.items())
+    # fallback: se l'API ignora il filtro query, filtra lato client
+    return [it for it in items if it.properties.get("eo:cloud_cover", 0) <= max_cloud]
 
 
 def load_bands_aoi(items, bands, aoi, *, resolution=10, crs="EPSG:32633"):

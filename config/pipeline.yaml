@@ -16,7 +16,7 @@ acquire:
   # endpoint STAC: cdse | earth-search | planetary-computer
   stac: cdse
   stac_url: https://catalogue.dataspace.copernicus.eu/stac
-  collection: SENTINEL-2          # per earth-search usare "sentinel-2-l2a"
+  collection: sentinel-2-l2a      # id STAC CDSE (minuscolo). L1C: sentinel-2-l1c
   processing_level: L2A           # L1C | L2A
   date_from: "2023-04-01"
   date_to: "2023-04-30"
