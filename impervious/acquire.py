@@ -98,6 +98,27 @@ def load_bands_aoi(items, bands, aoi, *, resolution=10, crs="EPSG:32633"):
     )
 
 
+def write_raster(items, bands, out_path, *, aoi, resolution=10, crs="EPSG:32633",
+                 dtype=None):
+    """Scrive un GeoTIFF (mosaico AoI delle bande) leggibile dal tiling.
+
+    Ponte acquisizione -> tiling: legge la finestra AoI dei COG (più prodotti =
+    mosaico via mediana temporale, riduce le nuvole) e salva un raster multibanda
+    in `crs` metrico, pronto per `raster.raster_tile[_overlap]`.
+    """
+    import rioxarray  # noqa: F401  (abilita l'accessor .rio)
+
+    ds = load_bands_aoi(items, bands, aoi, resolution=resolution, crs=crs)
+    if "time" in ds.dims:
+        ds = ds.median(dim="time", skipna=True)
+    arr = ds[bands].to_array(dim="band")
+    if dtype:
+        arr = arr.astype(dtype)
+    arr.rio.write_crs(crs, inplace=True)
+    arr.rio.to_raster(out_path)
+    return out_path
+
+
 def download_product(item, out_dir="data", *, concurrency=4):
     """Scarica il prodotto SAFE completo dal CDSE (cdsetool). Serve per L1C/uso pieno."""
     from cdsetool.credentials import Credentials
