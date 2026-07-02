@@ -29,20 +29,26 @@ def bbox_to_wkt(xn: float, yn: float, xx: float, yx: float) -> str:
 
 
 def read_geometries_in_bbox(bbox, table="buildings", *, engine=None,
-                            dst_srid=32633, geom_col="geometry") -> gpd.GeoDataFrame:
-    """Geometrie della `table` che intersecano il bbox, ritagliate ad esso.
+                            dst_srid=32633, src_srid=4326, geom_col="geometry") -> gpd.GeoDataFrame:
+    """Geometrie della `table` che intersecano il bbox, ritagliate e riproiettate.
 
-    `bbox = (xn, yn, xx, yx)` in `dst_srid` (CRS metrico). Replica la query
-    ST_Intersection dei notebook annotations.
+    `bbox = (xn, yn, xx, yx)` in `dst_srid` (CRS metrico del tile). L'intersezione
+    avviene nel CRS nativo `src_srid` (usa l'indice spaziale e NON trasforma tutte
+    le geometrie — evita l'errore PROJ "point outside projection domain" su feature
+    fuori-zona); solo il bbox e il risultato vengono riproiettati in `dst_srid`.
+    `ST_MakeValid` protegge da geometrie non valide.
     """
     engine = engine or pg_engine()
     wkt = bbox_to_wkt(*bbox)
     qry = f"""
-        SELECT ST_Intersection(ST_Transform(a.geometry, {dst_srid}), b.geometry) AS {geom_col}
-        FROM public.{table} a
-        JOIN ST_GeomFromText('{wkt}', {dst_srid}) AS b
-          ON ST_Intersects(ST_Transform(a.geometry, {dst_srid}), b.geometry)
-        ORDER BY a.index
+        WITH bb AS (
+            SELECT ST_Transform(ST_GeomFromText('{wkt}', {dst_srid}), {src_srid}) AS g
+        )
+        SELECT ST_Transform(
+                   ST_Intersection(ST_MakeValid(a.geometry), bb.g), {dst_srid}
+               ) AS {geom_col}
+        FROM public.{table} a, bb
+        WHERE ST_Intersects(a.geometry, bb.g)
     """
     return gpd.read_postgis(qry, engine, geom_col=geom_col)
 
