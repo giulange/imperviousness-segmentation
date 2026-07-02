@@ -59,7 +59,8 @@ def add_indices(df):
     """Aggiunge NDVI/NDBI/NDWI se le bande necessarie sono presenti."""
     def nd(a, b):
         s = (df[a] + df[b]).replace(0, np.nan)
-        return (df[a] - df[b]) / s
+        # indice normalizzato: limitato a [-1, 1] (evita artefatti da denominatore ~0)
+        return ((df[a] - df[b]) / s).clip(-1, 1)
 
     cols = set(df.columns)
     if {"nir", "red"} <= cols:
