@@ -73,6 +73,23 @@ def reproject(gdf: gpd.GeoDataFrame, epsg: int) -> gpd.GeoDataFrame:
     return gdf.to_crs(epsg)
 
 
+def sanitize_for_postgis(gdf: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+    """Rende le colonne caricabili in PostGIS.
+
+    - gli ID OSM (osmid) sono a 64 bit -> a testo (evita overflow INTEGER)
+    - colonne con liste/dict (es. `nodes`) -> a testo
+    """
+    out = gdf.copy()
+    geom_col = out.geometry.name
+    for col in out.columns:
+        if col == geom_col:
+            continue
+        s = out[col]
+        if col == "osmid" or s.map(lambda v: isinstance(v, (list, dict))).any():
+            out[col] = s.map(lambda v: None if v is None else str(v))
+    return out
+
+
 def load_dir_to_postgis(osm_dir="osm_data", table="buildings", *, engine=None,
                         keep_columns=None) -> int:
     """Carica tutti i buildings__*.geojson di una cartella in PostGIS.
@@ -87,6 +104,7 @@ def load_dir_to_postgis(osm_dir="osm_data", table="buildings", *, engine=None,
         gdf = gpd.read_file(Path(osm_dir) / fname)
         if keep_columns:
             gdf = harmonize_columns(gdf, keep_columns)
+        gdf = sanitize_for_postgis(gdf)
         gdf.to_postgis(table, engine, schema="public", if_exists="append", index=True)
         total += len(gdf)
     return total
