@@ -17,8 +17,23 @@ import os
 
 from .config import settings
 
-__all__ = ["configure_cdse_s3", "stac_client", "search_s2", "load_bands_aoi",
-           "download_product"]
+__all__ = ["configure_s3", "configure_cdse_s3", "stac_client", "search_s2",
+           "load_bands_aoi", "download_product"]
+
+
+def configure_s3(stac: str) -> None:
+    """Configura GDAL/rasterio per il provider scelto (da chiamare prima della lettura).
+
+    - cdse               : chiavi S3 EODATA (privato) + endpoint + regione us-east-1
+    - earth-search       : bucket sentinel-cogs pubblico su AWS (no auth), us-west-2
+    - planetary-computer : asset firmati dal modifier STAC (nessuna env S3)
+    """
+    if stac == "cdse":
+        configure_cdse_s3()
+    elif stac == "earth-search":
+        os.environ.setdefault("AWS_NO_SIGN_REQUEST", "YES")
+        os.environ.setdefault("AWS_DEFAULT_REGION", "us-west-2")
+        os.environ.setdefault("AWS_REGION", "us-west-2")
 
 
 def configure_cdse_s3() -> None:

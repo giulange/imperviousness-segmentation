@@ -72,6 +72,7 @@ def _(P, acquire, aoi):
         stac=P.acquire["stac"], stac_url=P.acquire["stac_url"],
     )
     print(f"{len(s2_items)} prodotti")
+    # acquire.configure_s3(P.acquire["stac"])
     # s2_ds = acquire.load_bands_aoi(s2_items[:1], P.acquire["bands"], aoi,
     #     resolution=P.acquire["resolution"], crs=f"EPSG:{P.aoi['crs_projected']}")
     return

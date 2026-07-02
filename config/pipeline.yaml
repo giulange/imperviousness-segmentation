@@ -14,15 +14,20 @@ aoi:
 # --- Acquisizione Sentinel-2 (STAC + COG) ---
 acquire:
   # endpoint STAC: cdse | earth-search | planetary-computer
-  stac: cdse
-  stac_url: https://catalogue.dataspace.copernicus.eu/stac
-  collection: sentinel-2-l2a      # id STAC CDSE (minuscolo). L1C: sentinel-2-l1c
+  # Attivo: earth-search (COG pubblici AWS, nessuna chiave — validato).
+  stac: earth-search
+  stac_url: https://earth-search.aws.element84.com/v1
+  collection: sentinel-2-l2a
   processing_level: L2A           # L1C | L2A
   date_from: "2023-04-01"
   date_to: "2023-04-30"
   max_cloud_cover: 10             # percentuale
-  bands: [B04_10m, B03_10m, B02_10m]   # RGB — naming asset CDSE (suffisso _10m)
+  bands: [red, green, blue]       # naming asset earth-search
   resolution: 10                  # metri
+  # --- Alternativa CDSE (ufficiale ESA; richiede account + chiavi S3 ATTIVE) ---
+  #   stac: cdse
+  #   stac_url: https://catalogue.dataspace.copernicus.eu/stac
+  #   bands: [B04_10m, B03_10m, B02_10m]   # naming CDSE (suffisso _10m)
 
 # --- OSM ---
 osm:

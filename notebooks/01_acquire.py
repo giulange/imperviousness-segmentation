@@ -59,6 +59,8 @@ def _(P, acquire, aoi):
 
 @app.cell
 def _(P, acquire, aoi, items):
+    # configura l'accesso S3 per il provider (earth-search: pubblico; cdse: chiavi)
+    acquire.configure_s3(P.acquire["stac"])
     # lettura finestrata COG delle bande sull'AoI (primo prodotto)
     ds = acquire.load_bands_aoi(
         items[:1],
