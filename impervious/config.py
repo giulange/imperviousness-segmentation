@@ -36,6 +36,15 @@ class Settings:
     cdse_s3_access_key: str = os.getenv("CDSE_S3_ACCESS_KEY", "")
     cdse_s3_secret_key: str = os.getenv("CDSE_S3_SECRET_KEY", "")
 
+    # --- SciHub / SentinelSat (legacy, dismesso: usato solo nei vecchi .ipynb) ---
+    scihub_user: str = os.getenv("SCIHUB_USER", "")
+    scihub_password: str = os.getenv("SCIHUB_PASSWORD", "")
+
+    # --- Sentinel Hub (sentinelhub-py: usato nei vecchi .ipynb) ---
+    sh_instance_id: str = os.getenv("SH_INSTANCE_ID", "")
+    sh_client_id: str = os.getenv("SH_CLIENT_ID", "")
+    sh_client_secret: str = os.getenv("SH_CLIENT_SECRET", "")
+
     # --- Percorsi dati (non versionati) ---
     data_dir: Path = Path(os.getenv("DATA_DIR", str(_ROOT / "data")))
     osm_dir: Path = Path(os.getenv("OSM_DIR", str(_ROOT / "osm_data")))
