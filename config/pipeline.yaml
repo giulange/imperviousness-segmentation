@@ -29,6 +29,14 @@ acquire:
   #   stac_url: https://catalogue.dataspace.copernicus.eu/stac
   #   bands: [B04_10m, B03_10m, B02_10m]   # naming CDSE (suffisso _10m)
 
+# --- Studio preliminare firme spettrali (notebook 07_signatures) ---
+analysis:
+  # bande multispettrali (naming earth-search); ricampionate a `resolution` su griglia comune
+  bands: [blue, green, red, nir, swir16, swir22]
+  # sotto-AoI per lo studio (EPSG:32633) — piccola, così il notebook gira interattivo
+  study_box_32633: [438000, 4517000, 443000, 4522000]   # ~5x5 km su Napoli
+  max_cloud_cover: 60          # per lo studio si può alzare (una singola scena)
+
 # --- OSM ---
 osm:
   # tag OSM da scaricare (chiave: valore o True)
