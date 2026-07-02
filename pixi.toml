@@ -52,7 +52,10 @@ geoalchemy2 = "*"
 psycopg2 = "*"
 
 # --- notebook & config ---
-marimo = ">=0.9"
+marimo = ">=0.9"          # notebook reattivi (pipeline "finale" cristallizzata)
+jupyterlab = ">=4.0"      # esplorazione libera sui vecchi .ipynb (celle mutabili, fuori-ordine)
+ipykernel = "*"           # kernel per JupyterLab
+ipywidgets = "*"          # widget interattivi nei notebook
 python-dotenv = "*"
 ipython = "*"
 pyyaml = ">=6.0"           # parametri pipeline in YAML
@@ -107,6 +110,8 @@ gpu = { features = ["gpu"], solve-group = "gpu" }
 [tasks]
 # Avvia Marimo accessibile via SSH tunnel (vedi scripts/launch_marimo.sh)
 marimo = "marimo edit --headless --host 0.0.0.0 --port 2718 notebooks"
+# Avvia JupyterLab per l'esplorazione libera sui vecchi .ipynb (via SSH tunnel)
+lab = "jupyter lab --no-browser --ip 0.0.0.0 --port 8888"
 # Converte i vecchi .ipynb in notebook Marimo (.py) dentro notebooks/
 convert = "bash scripts/convert_notebooks.sh"
 # Verifica che PyTorch veda la A100

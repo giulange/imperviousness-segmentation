@@ -23,6 +23,10 @@ marimo.log
 .marimo.pid
 __marimo__/
 
+# --- jupyterlab (runtime) ---
+jupyter.log
+.jupyter.pid
+
 # --- gitnexus (indice locale knowledge graph) ---
 .gitnexus/
 
