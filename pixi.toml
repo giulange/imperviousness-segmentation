@@ -60,6 +60,7 @@ pyyaml = ">=6.0"           # parametri pipeline in YAML
 # --- Copernicus Data Space Ecosystem + STAC/COG ---
 pystac-client = ">=0.8"    # ricerca sui cataloghi STAC (CDSE / Earth Search / PC)
 odc-stac = "*"             # STAC -> xarray con lettura finestrata COG (ritaglio AoI)
+boto3 = "*"                # richiesto da rasterio per le credenziali S3 (lettura COG da CDSE)
 
 [pypi-dependencies]
 # il pacchetto locale, installato editable -> importabile ovunque (notebook/script/REPL)
