@@ -26,6 +26,8 @@ def configure_cdse_s3() -> None:
     os.environ.setdefault("AWS_S3_ENDPOINT", "eodata.dataspace.copernicus.eu")
     os.environ.setdefault("AWS_VIRTUAL_HOSTING", "FALSE")
     os.environ.setdefault("AWS_HTTPS", "YES")
+    os.environ.setdefault("AWS_DEFAULT_REGION", "default")
+    os.environ.setdefault("AWS_REGION", "default")
     if settings.cdse_s3_access_key:
         os.environ["AWS_ACCESS_KEY_ID"] = settings.cdse_s3_access_key
     if settings.cdse_s3_secret_key:

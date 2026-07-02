@@ -21,7 +21,7 @@ acquire:
   date_from: "2023-04-01"
   date_to: "2023-04-30"
   max_cloud_cover: 10             # percentuale
-  bands: [B04, B03, B02]          # RGB (aggiungi B08 per NIR, ecc.)
+  bands: [B04_10m, B03_10m, B02_10m]   # RGB — naming asset CDSE (suffisso _10m)
   resolution: 10                  # metri
 
 # --- OSM ---
